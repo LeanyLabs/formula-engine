@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Engine functions should throw FunctionError if function fails 1`] = `
+"Function THROW at 0 thrown an error: Error: function failed, stacktrace: Error: function failed
+    at Object.THROW (/Users/mzahor/leany/formula-engine/tests/test-functions.ts:18:9)
+    at InterpreterVisitor.functionExpression (/Users/mzahor/leany/formula-engine/src/visitor.ts:126:29)
+    at InterpreterVisitor.visit (/Users/mzahor/leany/formula-engine/node_modules/chevrotain/src/parse/cst/cst_visitor.ts:61:32)
+    at InterpreterVisitor.atomicExpression (/Users/mzahor/leany/formula-engine/src/visitor.ts:91:21)
+    at InterpreterVisitor.visit (/Users/mzahor/leany/formula-engine/node_modules/chevrotain/src/parse/cst/cst_visitor.ts:61:32)
+    at InterpreterVisitor.multiplicationExpression (/Users/mzahor/leany/formula-engine/src/visitor.ts:71:25)
+    at InterpreterVisitor.visit (/Users/mzahor/leany/formula-engine/node_modules/chevrotain/src/parse/cst/cst_visitor.ts:61:32)
+    at InterpreterVisitor.additionExpression (/Users/mzahor/leany/formula-engine/src/visitor.ts:52:25)
+    at InterpreterVisitor.visit (/Users/mzahor/leany/formula-engine/node_modules/chevrotain/src/parse/cst/cst_visitor.ts:61:32)
+    at InterpreterVisitor.comparisonExpression (/Users/mzahor/leany/formula-engine/src/visitor.ts:27:23)"
+`;
+
+exports[`Engine invalid syntax should throw LexerError 1`] = `"Tokenization error"`;
+
+exports[`Engine invalid syntax should throw ParsingError 1`] = `"Parsing error"`;

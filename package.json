@@ -2,6 +2,7 @@
   "name": "@leanylabs/formula-engine",
   "version": "1.0.1",
   "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "license": "MIT",
   "scripts": {
     "start": "ts-node-dev ./src/index.ts",

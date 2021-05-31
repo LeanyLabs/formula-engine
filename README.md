@@ -1,8 +1,6 @@
 # Formula Engine
 
-## Intro
-
-This is a small formula parser and executor which allow you to specify a set of custom functions and variables.
+Extendable formula parser and executor.
 
 ## Usage
 

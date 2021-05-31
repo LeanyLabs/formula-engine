@@ -36,5 +36,11 @@
     },
     "testEnvironment": "node",
     "maxConcurrency": 1
-  }
+  },
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ]
 }

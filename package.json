@@ -1,10 +1,11 @@
 {
   "name": "@leanylabs/formula-engine",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/src/index.js",
   "license": "MIT",
   "scripts": {
     "start": "ts-node-dev ./src/index.ts",
+    "build": "tsc",
     "test": "jest"
   },
   "dependencies": {

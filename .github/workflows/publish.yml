@@ -1,0 +1,53 @@
+name: Publish to npm
+
+on:
+  workflow_dispatch:
+    inputs:
+      semanticVersion:
+        description: "Semantic Version [major|minor|patch]"
+        required: true
+        default: "patch"
+
+jobs:
+  Publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ADMIN_TOKEN }}
+          ref: "master"
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org/
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
+
+      - name: Configure CI Git User
+        run: |
+          git config --global user.name '@leanylabs-release-bot'
+          git config --global user.email 'leanylabs-release-bot@users.noreply.github.com'
+
+      - name: Set yarn commit message
+        run: 'yarn config set version-git-message "chore: release v%s"'
+
+      - name: Bump Version
+        run: yarn version --${{ github.event.inputs.semanticVersion }}
+
+      - name: Publish to NPM
+        run: yarn publish --access=public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Push Version Update
+        run: git push

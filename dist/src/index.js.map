@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/index.ts"],"names":[],"mappings":";;;AAAA,qCAIkB;AAET,8FALP,sBAAa,OAKO","sourcesContent":["import {\n  FormulaEngine,\n  ReferenceResolver,\n  ReferenceResolverAsync,\n} from \"./engine\";\n\nexport { FormulaEngine, ReferenceResolver, ReferenceResolverAsync };\n"]}

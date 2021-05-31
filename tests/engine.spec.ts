@@ -148,7 +148,7 @@ describe("Engine", () => {
 
   describe("functions", () => {
     it("should throw FunctionError if function fails", async () => {
-      expect(() => engine.exec(`THROW()`)).toThrowErrorMatchingSnapshot();
+      expect(() => engine.exec(`THROW()`)).toThrowError();
     });
   });
 });

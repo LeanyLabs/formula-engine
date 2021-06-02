@@ -1,5 +1,6 @@
 {
   "name": "@leanylabs/formula-engine",
+  "author": "LeanyLabs",
   "version": "1.0.4",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -38,6 +39,14 @@
     "testEnvironment": "node",
     "maxConcurrency": 1
   },
+  "repository": "https://github.com/LeanyLabs/formula-engine",
+  "keywords": [
+    "formula",
+    "parser",
+    "engine",
+    "excel",
+    "sheets"
+  ],
   "files": [
     "dist/**/*",
     "package.json",

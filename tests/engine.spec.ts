@@ -7,6 +7,8 @@ describe("Engine", () => {
       a: 10,
       b: 20,
       'x.y': 5,
+      'obj.val': 10,
+      'obj.val2': 2,
     };
   }
   const engine = new FormulaEngine(resolveReferencesSync, functions);
@@ -37,6 +39,9 @@ describe("Engine", () => {
       });
       it("should work for references", () => {
         assertEqual("{a} * {b}", 200);
+      });
+      it('should work for references with dot in the name', async () => {
+        assertEqual("{obj.val} * {obj.val2}", 20);
       });
     });
 

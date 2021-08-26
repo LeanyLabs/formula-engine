@@ -75,7 +75,7 @@ const Function = createToken({
 });
 const Reference = createToken({
   name: TokenName.Reference,
-  pattern: /\{[A-Za-z_.]+\}/,
+  pattern: /\{[A-Za-z_0-9\.]+\}/,
 });
 
 const Comma = createToken({

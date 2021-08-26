@@ -6,6 +6,7 @@ describe("Engine", () => {
     return {
       a: 10,
       b: 20,
+      'x.y': 5,
     };
   }
   const engine = new FormulaEngine(resolveReferencesSync, functions);
@@ -21,6 +22,9 @@ describe("Engine", () => {
       });
       it("should work for references", () => {
         assertEqual("{a} + {b}", 30);
+      });
+      it("should work for references with dot in the name", () => {
+        assertEqual("{x.y} + {a}", 15);
       });
       it("should work for literals - sub", () => {
         assertEqual("10 - 20", -10);

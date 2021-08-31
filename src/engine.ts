@@ -56,7 +56,9 @@ export class FormulaEngine {
   private tokenize(formula: string) {
     const lexingResult = FormulaLexer.tokenize(formula);
     if (lexingResult.errors.length > 0) {
-      throw new LexerError("Tokenization error", lexingResult.errors);
+      throw new LexerError("Tokenization error", {
+        errors: lexingResult.errors,
+      });
     }
     return lexingResult;
   }
@@ -67,7 +69,7 @@ export class FormulaEngine {
     const cst = this.parser.expression();
 
     if (!cst || this.parser.errors.length > 0) {
-      throw new ParserError("Parsing error", this.parser.errors);
+      throw new ParserError("Parsing error", { errors: this.parser.errors });
     }
 
     return cst;

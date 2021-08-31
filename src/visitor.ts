@@ -1,5 +1,5 @@
 import { CstNode, tokenMatcher } from "chevrotain";
-import { FunctionError } from "./exceptions";
+import { ExecutionError, FunctionError } from "./exceptions";
 import { tokens } from "./lexer";
 import { FormulaParser } from "./parser";
 
@@ -45,7 +45,10 @@ export function createEvalVisitor(
       if (tokenMatcher(operator, tokens.Eq)) {
         return left === right;
       }
-      throw new Error(`Operator not implemented: ${operator}`);
+      throw new ExecutionError(`Operator not implemented: ${operator}`, {
+        operator,
+        context: ctx,
+      });
     }
 
     additionExpression(ctx, state): any {
@@ -59,8 +62,9 @@ export function createEvalVisitor(
         } else if (tokenMatcher(operator, tokens.Minus)) {
           result -= value;
         } else {
-          throw new Error(
-            `Unknown operator: ${operator.image} at ${operator.startOffset}`
+          throw new ExecutionError(
+            `Unknown operator: ${operator.image} at ${operator.startOffset}`,
+            { operator, context: ctx }
           );
         }
       }
@@ -78,8 +82,9 @@ export function createEvalVisitor(
         } else if (tokenMatcher(operator, tokens.Div)) {
           result /= value;
         } else {
-          throw new Error(
-            `Unknown operator: ${operator.image} at ${operator.startOffset}`
+          throw new ExecutionError(
+            `Unknown operator: ${operator.image} at ${operator.startOffset}`,
+            { operator, context: ctx }
           );
         }
       }
@@ -115,8 +120,9 @@ export function createEvalVisitor(
       const func = functions[functionName];
 
       if (!func) {
-        throw new Error(
-          `Unknown function: ${functionName} at ${ctx.Function[0].startOffset}`
+        throw new ExecutionError(
+          `Unknown function: ${functionName} at ${ctx.Function[0].startOffset}`,
+          { functionName, context: ctx }
         );
       }
 
@@ -128,7 +134,12 @@ export function createEvalVisitor(
       } catch (err) {
         throw new FunctionError(
           `Function ${functionName} at ${ctx.Function[0].startOffset} thrown an error: ${err}, stacktrace: ${err.stack}`,
-          { originalError: err, functionName, function: ctx.Function[0] }
+          {
+            originalError: err,
+            functionName,
+            function: ctx.Function[0],
+            context: ctx,
+          }
         );
       }
     }

@@ -30,22 +30,32 @@ export function createEvalVisitor(
       let right = this.visit(ctx.rhs, state);
       const operator = ctx.ComparisonOperator[0];
 
+      const assertTypes = (operator: any, types?: string[]) => {
+        this.assertOperandType(["number"], "left", operator, left, ctx);
+        this.assertOperandType(["number"], "right", operator, right, ctx);
+      };
+
       if (tokenMatcher(operator, tokens.Lt)) {
+        assertTypes("<");
         return left < right;
       }
       if (tokenMatcher(operator, tokens.Lte)) {
+        assertTypes("<=");
         return left <= right;
       }
       if (tokenMatcher(operator, tokens.Gt)) {
+        assertTypes(">");
         return left > right;
       }
       if (tokenMatcher(operator, tokens.Gte)) {
+        assertTypes(">=");
         return left >= right;
       }
       if (tokenMatcher(operator, tokens.Eq)) {
+        // we can compare any type with ===
         return left === right;
       }
-      throw new ExecutionError(`Operator not implemented: ${operator}`, {
+      throw new ExecutionError(`Operator "${operator}" is not implemented`, {
         operator,
         context: ctx,
       });
@@ -54,12 +64,17 @@ export function createEvalVisitor(
     additionExpression(ctx, state): any {
       let result = this.visit(ctx.lhs, state);
       if (!ctx.rhs) return result;
+
       for (let i = 0; i < ctx.rhs.length; i++) {
         const operator = ctx.AdditionOperator[i];
         const value = this.visit(ctx.rhs[i], state);
         if (tokenMatcher(operator, tokens.Plus)) {
+          this.assertOperandType(["number"], "left", "+", result, ctx);
+          this.assertOperandType(["number"], "right", "+", value, ctx);
           result += value;
         } else if (tokenMatcher(operator, tokens.Minus)) {
+          this.assertOperandType(["number"], "left", "-", result, ctx);
+          this.assertOperandType(["number"], "right", "-", value, ctx);
           result -= value;
         } else {
           throw new ExecutionError(
@@ -133,7 +148,7 @@ export function createEvalVisitor(
         return result;
       } catch (err) {
         throw new FunctionError(
-          `Function ${functionName} at ${ctx.Function[0].startOffset} thrown an error: ${err}, stacktrace: ${err.stack}`,
+          `Function "${functionName}" at ${ctx.Function[0].startOffset} has thrown an error: ${err}, stacktrace: ${err.stack}`,
           {
             originalError: err,
             functionName,
@@ -159,6 +174,29 @@ export function createEvalVisitor(
         this.visit(arg, state)
       );
       return result;
+    }
+
+    private assertOperandType(
+      types: string[],
+      side: string,
+      {
+        operator,
+        value,
+        context,
+      }: { operator: any; value: any; context: any; token: any }
+    ) {
+      const actualType = typeof value;
+      if (!types.some((type) => type === actualType)) {
+        throw new ExecutionError(
+          `Expected ${types.join(
+            "or "
+          )} on the ${side} side of "${operator}", but got ${actualType}`,
+          {
+            context,
+            token,
+          }
+        );
+      }
     }
   }
 

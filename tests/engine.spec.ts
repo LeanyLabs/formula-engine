@@ -6,9 +6,9 @@ describe("Engine", () => {
     return {
       a: 10,
       b: 20,
-      'x.y': 5,
-      'obj.val': 10,
-      'obj.val2': 2,
+      "x.y": 5,
+      "obj.val": 10,
+      "obj.val2": 2,
     };
   }
   const engine = new FormulaEngine(resolveReferencesSync, functions);
@@ -40,7 +40,7 @@ describe("Engine", () => {
       it("should work for references", () => {
         assertEqual("{a} * {b}", 200);
       });
-      it('should work for references with dot in the name', async () => {
+      it("should work for references with dot in the name", async () => {
         assertEqual("{obj.val} * {obj.val2}", 20);
       });
     });
@@ -158,6 +158,27 @@ describe("Engine", () => {
   describe("functions", () => {
     it("should throw FunctionError if function fails", async () => {
       expect(() => engine.exec(`THROW()`)).toThrowError();
+    });
+  });
+
+  describe("errors", () => {
+    it("should throw tokenizer error", async () => {
+      let error;
+      try {
+        engine.exec(`a)`);
+      } catch (err) {
+        error = err;
+      }
+      expect(error).not.toBeUndefined();
+      console.log(JSON.stringify(error.details, null, 4));
+    });
+
+    describe('type errors', () => {
+      describe('comparison', () => {
+        it('should throw if comparing anything except number', async () => {
+
+        });
+      });
     });
   });
 });
